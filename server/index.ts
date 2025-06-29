@@ -40,7 +40,26 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  await seedDatabase();
+  // Run database migration first
+  try {
+    console.log('🔄 Running database migration...');
+    const { execSync } = await import('child_process');
+    execSync('npx drizzle-kit push', { stdio: 'inherit' });
+    console.log('✅ Database migration completed');
+  } catch (error) {
+    console.error('❌ Database migration failed:', error);
+    console.log('⚠️  Continuing without migration...');
+  }
+
+  // Then seed database
+  try {
+    await seedDatabase();
+    console.log('✅ Database seeding completed');
+  } catch (error) {
+    console.error('❌ Database seeding failed:', error);
+    console.log('⚠️  Continuing without seeding...');
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
