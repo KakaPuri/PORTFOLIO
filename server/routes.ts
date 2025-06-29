@@ -31,6 +31,19 @@ function requireAuth(req: any, res: any, next: any) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint (simple, no database dependency)
+  app.get("/api/health", async (req, res) => {
+    try {
+      res.json({ 
+        status: "ok", 
+        timestamp: new Date().toISOString(),
+        message: "Server is running" 
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Health check failed" });
+    }
+  });
+
   // Auth routes
   app.post("/api/auth/login", async (req, res) => {
     try {
