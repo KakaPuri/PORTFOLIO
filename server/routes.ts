@@ -95,9 +95,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/profile", async (req, res) => {
     try {
       const profile = await storage.getProfile();
-      res.json(profile);
+      res.json(profile || {});
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch profile" });
+      console.error("Profile fetch error:", error);
+      res.json({});
     }
   });
 
@@ -119,9 +120,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/articles", async (req, res) => {
     try {
       const articles = await storage.getArticles();
-      res.json(articles);
+      res.json(articles || []);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch articles" });
+      console.error("Articles fetch error:", error);
+      res.json([]);
     }
   });
 
@@ -187,9 +189,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/skills", async (req, res) => {
     try {
       const skills = await storage.getSkills();
-      res.json(skills);
+      res.json(skills || []);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch skills" });
+      console.error("Skills fetch error:", error);
+      res.json([]);
     }
   });
 
@@ -242,9 +245,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/experiences", async (req, res) => {
     try {
       const experiences = await storage.getExperiences();
-      res.json(experiences);
+      res.json(experiences || []);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch experiences" });
+      console.error("Experiences fetch error:", error);
+      res.json([]);
     }
   });
 
@@ -266,9 +270,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/education", async (req, res) => {
     try {
       const education = await storage.getEducation();
-      res.json(education);
+      res.json(education || []);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch education" });
+      console.error("Education fetch error:", error);
+      res.json([]);
     }
   });
 
@@ -321,9 +326,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/activities", async (req, res) => {
     try {
       const activities = await storage.getActivities();
-      res.json(activities);
+      res.json(activities || []);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch activities" });
+      console.error("Activities fetch error:", error);
+      res.json([]);
     }
   });
 
@@ -376,9 +382,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/values", async (req, res) => {
     try {
       const values = await storage.getValues();
-      res.json(values);
+      res.json(values || []);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch values" });
+      console.error("Values fetch error:", error);
+      res.json([]);
     }
   });
 
