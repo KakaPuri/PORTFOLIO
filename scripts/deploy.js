@@ -33,11 +33,32 @@ async function deploy() {
     // Run Drizzle migrations
     try {
       console.log('🔄 Running database migrations...');
-      execSync('npx drizzle-kit push', { stdio: 'inherit' });
-      console.log('✅ Database migrations completed');
+      
+      // Wait a bit for database to be ready
+      console.log('⏳ Waiting for database to be ready...');
+      await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds
+      
+      // Retry migration up to 3 times
+      let migrationSuccess = false;
+      for (let i = 0; i < 3; i++) {
+        try {
+          execSync('npx drizzle-kit push', { stdio: 'inherit' });
+          migrationSuccess = true;
+          break;
+        } catch (error) {
+          console.log(`❌ Migration attempt ${i + 1} failed, retrying in 5 seconds...`);
+          if (i < 2) await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+      }
+      
+      if (migrationSuccess) {
+        console.log('✅ Database migrations completed');
+      } else {
+        throw new Error('Migration failed after 3 attempts');
+      }
     } catch (error) {
       console.error('❌ Database migration failed:', error.message);
-      return;
+      console.log('⚠️  Continuing deployment without migrations...');
     }
 
     // Seed database if needed
