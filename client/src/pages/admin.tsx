@@ -698,277 +698,277 @@ export default function Admin() {
   return (
     <>
       <AnimatedBlueBg />
-      <div className="relative z-10 pt-24">
-        <section className="py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Header with logout button */}
-            <div className="flex justify-center items-center mb-8 relative">
+    <div className="relative z-10 pt-24">
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header with logout button */}
+          <div className="flex justify-center items-center mb-8 relative">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1 className="text-5xl font-bold gradient-text mb-6">Admin Dashboard</h1>
+            </motion.div>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="border-red-500 text-red-400 hover:bg-red-500/20 absolute right-0"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
+          
+          {/* Dashboard Stats */}
+          <div className="grid md:grid-cols-5 gap-4 mb-12">
+            {stats.map((stat, index) => (
               <motion.div
-                className="text-center"
+                key={stat.title}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <h1 className="text-5xl font-bold gradient-text mb-6">Admin Dashboard</h1>
+                <Card className="glass-effect rounded-2xl p-4 text-center hover-glow transition-all duration-300 border-white/10">
+                  <CardContent className="p-0">
+                    <div className="mb-2">{stat.icon}</div>
+                    <div className="text-xl font-bold text-white">{stat.value}</div>
+                    <div className="text-gray-300 text-sm">{stat.title}</div>
+                  </CardContent>
+                </Card>
               </motion.div>
-              <Button
-                onClick={handleLogout}
-                variant="outline"
-                className="border-red-500 text-red-400 hover:bg-red-500/20 absolute right-0"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </Button>
-            </div>
-            
-            {/* Dashboard Stats */}
-            <div className="grid md:grid-cols-5 gap-4 mb-12">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.title}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <Card className="glass-effect rounded-2xl p-4 text-center hover-glow transition-all duration-300 border-white/10">
+            ))}
+          </div>
+          
+          <Tabs defaultValue="articles" className="w-full">
+            <TabsList className="grid w-full grid-cols-6 glass-effect border-white/10">
+              <TabsTrigger value="articles">Articles</TabsTrigger>
+              <TabsTrigger value="skills">Skills</TabsTrigger>
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="messages">Messages</TabsTrigger>
+              <TabsTrigger value="activities">Activities</TabsTrigger>
+              <TabsTrigger value="education">Education</TabsTrigger>
+                <TabsTrigger value="values">Values</TabsTrigger>
+            </TabsList>
+
+            {/* Articles Management */}
+            <TabsContent value="articles">
+              <div className="grid lg:grid-cols-3 gap-8">
+                {/* Article Form */}
+                <div className="lg:col-span-1">
+                  <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                    <CardHeader className="p-0 mb-6">
+                      <CardTitle className="text-2xl font-semibold text-blue-400">
+                        {editingArticle ? "Edit Article" : "Add Article"}
+                      </CardTitle>
+                    </CardHeader>
                     <CardContent className="p-0">
-                      <div className="mb-2">{stat.icon}</div>
-                      <div className="text-xl font-bold text-white">{stat.value}</div>
-                      <div className="text-gray-300 text-sm">{stat.title}</div>
+                      <Form {...articleForm}>
+                        <form onSubmit={articleForm.handleSubmit(onSubmitArticle)} className="space-y-4">
+                          <FormField
+                            control={articleForm.control}
+                            name="title"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Title</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Article title"
+                                    className="bg-slate-800 border-gray-600 text-white"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={articleForm.control}
+                            name="category"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Category</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="e.g. React, Node.js"
+                                    className="bg-slate-800 border-gray-600 text-white"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={articleForm.control}
+                            name="excerpt"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Excerpt</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    placeholder="Brief description"
+                                    className="bg-slate-800 border-gray-600 text-white"
+                                    rows={3}
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={articleForm.control}
+                            name="imageUrl"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Image</FormLabel>
+                                <FormControl>
+                                  <div className="flex items-center gap-4">
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      id="article-image-upload"
+                                      style={{ display: 'none' }}
+                                      onChange={async (e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                          const reader = new FileReader();
+                                          reader.onloadend = () => {
+                                            field.onChange(reader.result as string);
+                                          };
+                                          reader.readAsDataURL(file);
+                                        }
+                                      }}
+                                    />
+                                    <Button
+                                      type="button"
+                                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
+                                      onClick={() => document.getElementById('article-image-upload')?.click()}
+                                    >
+                                      Choose File
+                                    </Button>
+                                    {field.value && (
+                                      <div className="w-16 h-16 rounded overflow-hidden border-2 border-gray-600">
+                                        <img
+                                          src={field.value}
+                                          alt="Article preview"
+                                          className="w-full h-full object-cover"
+                                          onError={(e) => {
+                                            e.currentTarget.style.display = 'none';
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={articleForm.control}
+                            name="content"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Content</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    placeholder="Full article content"
+                                    className="bg-slate-800 border-gray-600 text-white"
+                                    rows={6}
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <div className="flex gap-2">
+                            <Button
+                              type="submit"
+                              className="flex-1 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600"
+                              disabled={createArticleMutation.isPending || updateArticleMutation.isPending}
+                            >
+                              <Save className="w-4 h-4 mr-2" />
+                              {editingArticle ? "Update" : "Create"}
+                            </Button>
+                            {editingArticle && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                onClick={handleCancelEdit}
+                                className="border-white/20 text-white"
+                              >
+                                Cancel
+                              </Button>
+                            )}
+                          </div>
+                        </form>
+                      </Form>
                     </CardContent>
                   </Card>
-                </motion.div>
-              ))}
-            </div>
-            
-            <Tabs defaultValue="articles" className="w-full">
-              <TabsList className="grid w-full grid-cols-6 glass-effect border-white/10">
-                <TabsTrigger value="articles">Articles</TabsTrigger>
-                <TabsTrigger value="skills">Skills</TabsTrigger>
-                <TabsTrigger value="profile">Profile</TabsTrigger>
-                <TabsTrigger value="messages">Messages</TabsTrigger>
-                <TabsTrigger value="activities">Activities</TabsTrigger>
-                <TabsTrigger value="education">Education</TabsTrigger>
-                <TabsTrigger value="values">Values</TabsTrigger>
-              </TabsList>
+                </div>
 
-              {/* Articles Management */}
-              <TabsContent value="articles">
-                <div className="grid lg:grid-cols-3 gap-8">
-                  {/* Article Form */}
-                  <div className="lg:col-span-1">
-                    <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                      <CardHeader className="p-0 mb-6">
-                        <CardTitle className="text-2xl font-semibold text-blue-400">
-                          {editingArticle ? "Edit Article" : "Add Article"}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <Form {...articleForm}>
-                          <form onSubmit={articleForm.handleSubmit(onSubmitArticle)} className="space-y-4">
-                            <FormField
-                              control={articleForm.control}
-                              name="title"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-gray-300">Title</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="Article title"
-                                      className="bg-slate-800 border-gray-600 text-white"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            
-                            <FormField
-                              control={articleForm.control}
-                              name="category"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-gray-300">Category</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      placeholder="e.g. React, Node.js"
-                                      className="bg-slate-800 border-gray-600 text-white"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            
-                            <FormField
-                              control={articleForm.control}
-                              name="excerpt"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-gray-300">Excerpt</FormLabel>
-                                  <FormControl>
-                                    <Textarea
-                                      placeholder="Brief description"
-                                      className="bg-slate-800 border-gray-600 text-white"
-                                      rows={3}
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            
-                            <FormField
-                              control={articleForm.control}
-                              name="imageUrl"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-gray-300">Image</FormLabel>
-                                  <FormControl>
-                                    <div className="flex items-center gap-4">
-                                      <input
-                                        type="file"
-                                        accept="image/*"
-                                        id="article-image-upload"
-                                        style={{ display: 'none' }}
-                                        onChange={async (e) => {
-                                          const file = e.target.files?.[0];
-                                          if (file) {
-                                            const reader = new FileReader();
-                                            reader.onloadend = () => {
-                                              field.onChange(reader.result as string);
-                                            };
-                                            reader.readAsDataURL(file);
-                                          }
-                                        }}
-                                      />
-                                      <Button
-                                        type="button"
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
-                                        onClick={() => document.getElementById('article-image-upload')?.click()}
-                                      >
-                                        Choose File
-                                      </Button>
-                                      {field.value && (
-                                        <div className="w-16 h-16 rounded overflow-hidden border-2 border-gray-600">
-                                          <img
-                                            src={field.value}
-                                            alt="Article preview"
-                                            className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                              e.currentTarget.style.display = 'none';
-                                            }}
-                                          />
-                                        </div>
-                                      )}
-                                    </div>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            
-                            <FormField
-                              control={articleForm.control}
-                              name="content"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-gray-300">Content</FormLabel>
-                                  <FormControl>
-                                    <Textarea
-                                      placeholder="Full article content"
-                                      className="bg-slate-800 border-gray-600 text-white"
-                                      rows={6}
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            
-                            <div className="flex gap-2">
-                              <Button
-                                type="submit"
-                                className="flex-1 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600"
-                                disabled={createArticleMutation.isPending || updateArticleMutation.isPending}
-                              >
-                                <Save className="w-4 h-4 mr-2" />
-                                {editingArticle ? "Update" : "Create"}
-                              </Button>
-                              {editingArticle && (
+                {/* Articles List */}
+                <div className="lg:col-span-2">
+                  <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                    <CardHeader className="p-0 mb-6">
+                      <CardTitle className="text-2xl font-semibold text-green-400">Manage Articles</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                      <div className="space-y-4">
+                        {articles.map((article) => (
+                          <div key={article.id} className="glass-effect p-4 rounded-xl">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-white mb-2">{article.title}</h3>
+                                <div className="flex items-center gap-2 mb-2">
+                                  <Badge className={`${getCategoryColor(article.category)} border-0`}>
+                                    {article.category}
+                                  </Badge>
+                                  <Badge className={article.published ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}>
+                                    {article.published ? "Published" : "Draft"}
+                                  </Badge>
+                                </div>
+                                <p className="text-gray-300 text-sm">{article.excerpt}</p>
+                              </div>
+                              <div className="flex gap-2 ml-4">
                                 <Button
-                                  type="button"
+                                  size="sm"
                                   variant="outline"
-                                  onClick={handleCancelEdit}
-                                  className="border-white/20 text-white"
+                                  onClick={() => handleEditArticle(article)}
+                                  className="border-blue-400/50 text-blue-400 hover:bg-blue-400/10"
                                 >
-                                  Cancel
+                                  <Edit className="w-4 h-4" />
                                 </Button>
-                              )}
-                            </div>
-                          </form>
-                        </Form>
-                      </CardContent>
-                    </Card>
-                  </div>
-
-                  {/* Articles List */}
-                  <div className="lg:col-span-2">
-                    <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                      <CardHeader className="p-0 mb-6">
-                        <CardTitle className="text-2xl font-semibold text-green-400">Manage Articles</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <div className="space-y-4">
-                          {articles.map((article) => (
-                            <div key={article.id} className="glass-effect p-4 rounded-xl">
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <h3 className="font-semibold text-white mb-2">{article.title}</h3>
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <Badge className={`${getCategoryColor(article.category)} border-0`}>
-                                      {article.category}
-                                    </Badge>
-                                    <Badge className={article.published ? "bg-green-500/20 text-green-400" : "bg-gray-500/20 text-gray-400"}>
-                                      {article.published ? "Published" : "Draft"}
-                                    </Badge>
-                                  </div>
-                                  <p className="text-gray-300 text-sm">{article.excerpt}</p>
-                                </div>
-                                <div className="flex gap-2 ml-4">
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => handleEditArticle(article)}
-                                    className="border-blue-400/50 text-blue-400 hover:bg-blue-400/10"
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    onClick={() => deleteArticleMutation.mutate(article.id)}
-                                    className="border-red-400/50 text-red-400 hover:bg-red-400/10"
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </Button>
-                                </div>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => deleteArticleMutation.mutate(article.id)}
+                                  className="border-red-400/50 text-red-400 hover:bg-red-400/10"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
                               </div>
                             </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </TabsContent>
+              </div>
+            </TabsContent>
 
-              {/* Skills Management */}
-              <TabsContent value="skills">
+            {/* Skills Management */}
+            <TabsContent value="skills">
                 <div className="mb-8">
                   <Card className="glass-effect rounded-2xl p-8 border-white/10">
                     <CardHeader className="p-0 mb-6">
@@ -1037,219 +1037,219 @@ export default function Admin() {
                     </CardContent>
                   </Card>
                 </div>
-                <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                  <CardHeader className="p-0 mb-6">
-                    <CardTitle className="text-2xl font-semibold text-green-400">Manage Skills</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {skills.map((skill) => (
-                        <div key={skill.id} className="glass-effect p-4 rounded-xl flex items-center justify-between">
-                          <div className="flex items-center">
-                            <i className={`${skill.icon} text-2xl ${
-                              skill.category === "Frontend" || skill.category === "Cloud" ? "text-blue-400" : "text-green-400"
-                            } mr-3`}></i>
-                            <div>
-                              <div className="font-semibold text-white">{skill.name}</div>
-                              <div className="text-sm text-gray-400">{skill.category}</div>
-                            </div>
+              <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                <CardHeader className="p-0 mb-6">
+                  <CardTitle className="text-2xl font-semibold text-green-400">Manage Skills</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {skills.map((skill) => (
+                      <div key={skill.id} className="glass-effect p-4 rounded-xl flex items-center justify-between">
+                        <div className="flex items-center">
+                          <i className={`${skill.icon} text-2xl ${
+                            skill.category === "Frontend" || skill.category === "Cloud" ? "text-blue-400" : "text-green-400"
+                          } mr-3`}></i>
+                          <div>
+                            <div className="font-semibold text-white">{skill.name}</div>
+                            <div className="text-sm text-gray-400">{skill.category}</div>
                           </div>
-                          <div className="flex items-center space-x-3">
-                            <div className={`font-semibold ${
-                              skill.percentage >= 80 ? "text-green-400" : "text-blue-400"
-                            }`}>
-                              {skill.percentage}%
-                            </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className={`font-semibold ${
+                            skill.percentage >= 80 ? "text-green-400" : "text-blue-400"
+                          }`}>
+                            {skill.percentage}%
+                          </div>
                             <Button size="sm" variant="outline" className="border-blue-400/50 text-blue-400" onClick={() => handleEditSkill(skill)}>
-                              <Edit className="w-4 h-4" />
-                            </Button>
+                            <Edit className="w-4 h-4" />
+                          </Button>
                             <Button size="sm" variant="outline" className="border-red-400/50 text-red-400" onClick={() => deleteSkillMutation.mutate(skill.id)}>
                               <Trash2 className="w-4 h-4" />
                             </Button>
-                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-              {/* Profile Management */}
-              <TabsContent value="profile">
-                <Card className="glass-effect rounded-2xl p-8 border-white/10 max-w-2xl">
-                  <CardHeader className="p-0 mb-6">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-2xl font-semibold text-blue-400">Profile Settings</CardTitle>
-                      <Button
-                        onClick={() => setEditingProfile(!editingProfile)}
-                        variant="outline"
-                        className="border-white/20 text-white"
-                      >
-                        <Settings className="w-4 h-4 mr-2" />
-                        {editingProfile ? "Cancel" : "Edit"}
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    {editingProfile ? (
-                      <Form {...profileForm}>
-                        <form onSubmit={profileForm.handleSubmit(onSubmitProfile)} className="space-y-4">
-                          <FormField
-                            control={profileForm.control}
-                            name="name"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Name</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className="bg-slate-800 border-gray-600 text-white"
-                                    {...field}
+            {/* Profile Management */}
+            <TabsContent value="profile">
+              <Card className="glass-effect rounded-2xl p-8 border-white/10 max-w-2xl">
+                <CardHeader className="p-0 mb-6">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-2xl font-semibold text-blue-400">Profile Settings</CardTitle>
+                    <Button
+                      onClick={() => setEditingProfile(!editingProfile)}
+                      variant="outline"
+                      className="border-white/20 text-white"
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      {editingProfile ? "Cancel" : "Edit"}
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                  {editingProfile ? (
+                    <Form {...profileForm}>
+                      <form onSubmit={profileForm.handleSubmit(onSubmitProfile)} className="space-y-4">
+                        <FormField
+                          control={profileForm.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Name</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-slate-800 border-gray-600 text-white"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={profileForm.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Email</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  className="bg-slate-800 border-gray-600 text-white"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={profileForm.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Phone</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-slate-800 border-gray-600 text-white"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={profileForm.control}
+                          name="location"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Location</FormLabel>
+                              <FormControl>
+                                <Input
+                                  className="bg-slate-800 border-gray-600 text-white"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={profileForm.control}
+                          name="tagline"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Tagline</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="e.g. Full Stack Developer & Tech Enthusiast"
+                                  className="bg-slate-800 border-gray-600 text-white"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={profileForm.control}
+                          name="imageUrl"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Profile Image</FormLabel>
+                              <FormControl>
+                                <div className="flex items-center gap-4">
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    id="profile-image-upload"
+                                    style={{ display: 'none' }}
+                                    onChange={async (e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                          setProfileImagePreview(reader.result as string);
+                                          field.onChange(reader.result as string);
+                                        };
+                                        reader.readAsDataURL(file);
+                                      }
+                                    }}
                                   />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={profileForm.control}
-                            name="email"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Email</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type="email"
-                                    className="bg-slate-800 border-gray-600 text-white"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={profileForm.control}
-                            name="phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Phone</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className="bg-slate-800 border-gray-600 text-white"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={profileForm.control}
-                            name="location"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Location</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className="bg-slate-800 border-gray-600 text-white"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={profileForm.control}
-                            name="tagline"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Tagline</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    placeholder="e.g. Full Stack Developer & Tech Enthusiast"
-                                    className="bg-slate-800 border-gray-600 text-white"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={profileForm.control}
-                            name="imageUrl"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Profile Image</FormLabel>
-                                <FormControl>
-                                  <div className="flex items-center gap-4">
-                                    <input
-                                      type="file"
-                                      accept="image/*"
-                                      id="profile-image-upload"
-                                      style={{ display: 'none' }}
-                                      onChange={async (e) => {
-                                        const file = e.target.files?.[0];
-                                        if (file) {
-                                          const reader = new FileReader();
-                                          reader.onloadend = () => {
-                                            setProfileImagePreview(reader.result as string);
-                                            field.onChange(reader.result as string);
-                                          };
-                                          reader.readAsDataURL(file);
-                                        }
-                                      }}
-                                    />
-                                    <Button
-                                      type="button"
-                                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
-                                      onClick={() => document.getElementById('profile-image-upload')?.click()}
-                                    >
-                                      Choose Photo
-                                    </Button>
-                                    {(profileImagePreview || field.value) && (
-                                      <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-600">
-                                        <img
-                                          src={profileImagePreview || field.value}
-                                          alt="Profile preview"
-                                          className="w-full h-full object-cover"
-                                          onError={(e) => {
-                                            e.currentTarget.style.display = 'none';
-                                          }}
-                                        />
-                                      </div>
-                                    )}
-                                  </div>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={profileForm.control}
-                            name="bio"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Bio</FormLabel>
-                                <FormControl>
-                                  <Textarea
-                                    rows={4}
-                                    placeholder="Tell us about yourself..."
-                                    className="bg-slate-800 border-gray-600 text-white"
-                                    {...field}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                                  <Button
+                                    type="button"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow"
+                                    onClick={() => document.getElementById('profile-image-upload')?.click()}
+                                  >
+                                    Choose Photo
+                                  </Button>
+                                  {(profileImagePreview || field.value) && (
+                                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-600">
+                                      <img
+                                        src={profileImagePreview || field.value}
+                                        alt="Profile preview"
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          e.currentTarget.style.display = 'none';
+                                        }}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={profileForm.control}
+                          name="bio"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Bio</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  rows={4}
+                                  placeholder="Tell us about yourself..."
+                                  className="bg-slate-800 border-gray-600 text-white"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                           
                           <FormField
                             control={profileForm.control}
@@ -1287,89 +1287,89 @@ export default function Admin() {
                               </FormItem>
                             )}
                           />
-                          
-                          <Button
-                            type="submit"
-                            className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600"
-                            disabled={updateProfileMutation.isPending}
-                          >
-                            <Save className="w-4 h-4 mr-2" />
-                            Update Profile
-                          </Button>
-                        </form>
-                      </Form>
-                    ) : (
-                      <div className="space-y-4">
-                        {/* Profile Image */}
-                        {profile?.imageUrl && (
-                          <div>
-                            <label className="text-sm font-medium text-gray-300">Profile Image</label>
-                            <div className="mt-2">
-                              <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-600">
-                                <img 
-                                  src={profile.imageUrl} 
-                                  alt="Profile" 
-                                  className="w-full h-full object-cover"
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = 'none';
-                                  }}
-                                />
-                              </div>
+                        
+                        <Button
+                          type="submit"
+                          className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600"
+                          disabled={updateProfileMutation.isPending}
+                        >
+                          <Save className="w-4 h-4 mr-2" />
+                          Update Profile
+                        </Button>
+                      </form>
+                    </Form>
+                  ) : (
+                    <div className="space-y-4">
+                      {/* Profile Image */}
+                      {profile?.imageUrl && (
+                        <div>
+                          <label className="text-sm font-medium text-gray-300">Profile Image</label>
+                          <div className="mt-2">
+                            <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-600">
+                              <img 
+                                src={profile.imageUrl} 
+                                alt="Profile" 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
                             </div>
                           </div>
-                        )}
-                        
-                        <div>
-                          <label className="text-sm font-medium text-gray-300">Name</label>
-                          <div className="text-white">{profile?.name}</div>
                         </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-300">Email</label>
-                          <div className="text-white">{profile?.email}</div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-300">Phone</label>
-                          <div className="text-white">{profile?.phone}</div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-300">Location</label>
-                          <div className="text-white">{profile?.location}</div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-300">Tagline</label>
-                          <div className="text-blue-400 font-medium">{profile?.tagline}</div>
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium text-gray-300">Bio</label>
-                          <div className="text-white">{profile?.bio}</div>
-                        </div>
+                      )}
+                      
+                      <div>
+                        <label className="text-sm font-medium text-gray-300">Name</label>
+                        <div className="text-white">{profile?.name}</div>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </TabsContent>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300">Email</label>
+                        <div className="text-white">{profile?.email}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300">Phone</label>
+                        <div className="text-white">{profile?.phone}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300">Location</label>
+                        <div className="text-white">{profile?.location}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300">Tagline</label>
+                        <div className="text-blue-400 font-medium">{profile?.tagline}</div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-300">Bio</label>
+                        <div className="text-white">{profile?.bio}</div>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-              {/* Messages */}
-              <TabsContent value="messages">
-                <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                  <CardHeader className="p-0 mb-6">
-                    <CardTitle className="text-2xl font-semibold text-blue-400">Recent Messages</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="space-y-4">
-                      {!Array.isArray(messages) || messages.length === 0 ? (
-                        <p className="text-gray-400 text-center py-8">No messages yet.</p>
-                      ) : (
-                        messages.map((message) => (
-                          <div key={message.id} className="glass-effect p-4 rounded-xl">
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="font-semibold text-white">{message.name}</h3>
-                                <p className="text-sm text-blue-400">{message.email}</p>
-                              </div>
+            {/* Messages */}
+            <TabsContent value="messages">
+              <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                <CardHeader className="p-0 mb-6">
+                  <CardTitle className="text-2xl font-semibold text-blue-400">Recent Messages</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="space-y-4">
+                    {!Array.isArray(messages) || messages.length === 0 ? (
+                      <p className="text-gray-400 text-center py-8">No messages yet.</p>
+                    ) : (
+                      messages.map((message) => (
+                        <div key={message.id} className="glass-effect p-4 rounded-xl">
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <h3 className="font-semibold text-white">{message.name}</h3>
+                              <p className="text-sm text-blue-400">{message.email}</p>
+                            </div>
                               <div className="flex items-center gap-2">
-                                <div className="text-xs text-gray-400">
-                                  {new Date(message.createdAt || Date.now()).toLocaleDateString()}
+                            <div className="text-xs text-gray-400">
+                              {new Date(message.createdAt || Date.now()).toLocaleDateString()}
                                 </div>
                                 <Button size="sm" variant="outline" className="border-red-400/50 text-red-400 hover:bg-red-400/10 ml-2" onClick={() => {
                                   if (window.confirm('Are you sure you want to delete this message?')) {
@@ -1378,190 +1378,190 @@ export default function Admin() {
                                 }}>
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
-                              </div>
                             </div>
-                            <h4 className="font-medium text-green-400 mb-2">{message.subject}</h4>
-                            <p className="text-gray-300 text-sm">{message.message}</p>
                           </div>
-                        ))
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* Activities Management */}
-              <TabsContent value="activities">
-                <div className="grid lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-1">
-                    <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                      <CardHeader className="p-0 mb-6">
-                        <CardTitle className="text-2xl font-semibold text-blue-400">{editingActivity ? "Edit Activity" : "Add Activity"}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <Form {...activityForm}>
-                          <form onSubmit={activityForm.handleSubmit(onSubmitActivity)} className="space-y-4">
-                            <FormField control={activityForm.control} name="title" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Title</FormLabel>
-                                <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={activityForm.control} name="description" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Description</FormLabel>
-                                <FormControl><Textarea className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={activityForm.control} name="icon" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Icon</FormLabel>
-                                <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={activityForm.control} name="order" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Order</FormLabel>
-                                <FormControl>
-                                  <Input type="number" className="bg-slate-800 border-gray-600 text-white" {...field} onChange={e => field.onChange(Number(e.target.value))} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <div className="flex gap-2">
-                              <Button type="submit" className="flex-1 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600">{editingActivity ? "Update" : "Create"}</Button>
-                              {editingActivity && <Button type="button" variant="outline" onClick={handleCancelEditActivity} className="border-white/20 text-white">Cancel</Button>}
-                            </div>
-                          </form>
-                        </Form>
-                      </CardContent>
-                    </Card>
+                          <h4 className="font-medium text-green-400 mb-2">{message.subject}</h4>
+                          <p className="text-gray-300 text-sm">{message.message}</p>
+                        </div>
+                      ))
+                    )}
                   </div>
-                  <div className="lg:col-span-2">
-                    <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                      <CardHeader className="p-0 mb-6">
-                        <CardTitle className="text-2xl font-semibold text-green-400">Manage Activities</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <div className="space-y-4">
-                          {activities.map((activity) => (
-                            <div key={activity.id} className="glass-effect p-4 rounded-xl">
-                              <div className="flex items-center justify-between">
-                                <div className="flex-1">
-                                  <h3 className="font-semibold text-white mb-2">{activity.title}</h3>
-                                  <div className="text-sm text-gray-400 mb-2">{activity.description}</div>
-                                  <span className="text-xs text-blue-400">{activity.icon}</span>
-                                </div>
-                                <div className="flex gap-2 ml-4">
-                                  <Button size="sm" variant="outline" onClick={() => handleEditActivity(activity)} className="border-blue-400/50 text-blue-400 hover:bg-blue-400/10"><Edit className="w-4 h-4" /></Button>
-                                  <Button size="sm" variant="outline" onClick={() => deleteActivityMutation.mutate(activity.id)} className="border-red-400/50 text-red-400 hover:bg-red-400/10"><Trash2 className="w-4 h-4" /></Button>
-                                </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Activities Management */}
+            <TabsContent value="activities">
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                  <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                    <CardHeader className="p-0 mb-6">
+                      <CardTitle className="text-2xl font-semibold text-blue-400">{editingActivity ? "Edit Activity" : "Add Activity"}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                      <Form {...activityForm}>
+                        <form onSubmit={activityForm.handleSubmit(onSubmitActivity)} className="space-y-4">
+                          <FormField control={activityForm.control} name="title" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Title</FormLabel>
+                              <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={activityForm.control} name="description" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Description</FormLabel>
+                              <FormControl><Textarea className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={activityForm.control} name="icon" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Icon</FormLabel>
+                              <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={activityForm.control} name="order" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Order</FormLabel>
+                              <FormControl>
+                                <Input type="number" className="bg-slate-800 border-gray-600 text-white" {...field} onChange={e => field.onChange(Number(e.target.value))} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <div className="flex gap-2">
+                            <Button type="submit" className="flex-1 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600">{editingActivity ? "Update" : "Create"}</Button>
+                            {editingActivity && <Button type="button" variant="outline" onClick={handleCancelEditActivity} className="border-white/20 text-white">Cancel</Button>}
+                          </div>
+                        </form>
+                      </Form>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="lg:col-span-2">
+                  <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                    <CardHeader className="p-0 mb-6">
+                      <CardTitle className="text-2xl font-semibold text-green-400">Manage Activities</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                      <div className="space-y-4">
+                        {activities.map((activity) => (
+                          <div key={activity.id} className="glass-effect p-4 rounded-xl">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-white mb-2">{activity.title}</h3>
+                                <div className="text-sm text-gray-400 mb-2">{activity.description}</div>
+                                <span className="text-xs text-blue-400">{activity.icon}</span>
+                              </div>
+                              <div className="flex gap-2 ml-4">
+                                <Button size="sm" variant="outline" onClick={() => handleEditActivity(activity)} className="border-blue-400/50 text-blue-400 hover:bg-blue-400/10"><Edit className="w-4 h-4" /></Button>
+                                <Button size="sm" variant="outline" onClick={() => deleteActivityMutation.mutate(activity.id)} className="border-red-400/50 text-red-400 hover:bg-red-400/10"><Trash2 className="w-4 h-4" /></Button>
                               </div>
                             </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </TabsContent>
+              </div>
+            </TabsContent>
 
-              {/* Education Management */}
-              <TabsContent value="education">
-                <div className="grid lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-1">
-                    <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                      <CardHeader className="p-0 mb-6">
-                        <CardTitle className="text-2xl font-semibold text-blue-400">{editingEducation ? "Edit Education" : "Add Education"}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <Form {...educationForm}>
-                          <form onSubmit={educationForm.handleSubmit(onSubmitEducation)} className="space-y-4">
-                            <FormField control={educationForm.control} name="degree" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Degree</FormLabel>
-                                <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={educationForm.control} name="institution" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Institution</FormLabel>
-                                <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={educationForm.control} name="description" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Description</FormLabel>
-                                <FormControl><Textarea className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={educationForm.control} name="startDate" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Start Date</FormLabel>
-                                <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={educationForm.control} name="endDate" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">End Date</FormLabel>
-                                <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <FormField control={educationForm.control} name="order" render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-300">Order</FormLabel>
-                                <FormControl>
-                                  <Input type="number" className="bg-slate-800 border-gray-600 text-white" {...field} onChange={e => field.onChange(Number(e.target.value))} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-                            <div className="flex gap-2">
-                              <Button type="submit" className="flex-1 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600">{editingEducation ? "Update" : "Create"}</Button>
-                              {editingEducation && <Button type="button" variant="outline" onClick={handleCancelEditEducation} className="border-white/20 text-white">Cancel</Button>}
-                            </div>
-                          </form>
-                        </Form>
-                      </CardContent>
-                    </Card>
-                  </div>
-                  <div className="lg:col-span-2">
-                    <Card className="glass-effect rounded-2xl p-8 border-white/10">
-                      <CardHeader className="p-0 mb-6">
-                        <CardTitle className="text-2xl font-semibold text-green-400">Manage Education</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <div className="space-y-4">
-                          {education.map((edu) => (
-                            <div key={edu.id} className="glass-effect p-4 rounded-xl">
-                              <div className="flex items-center justify-between">
-                                <div className="flex-1">
-                                  <h3 className="font-semibold text-white mb-2">{edu.degree}</h3>
-                                  <div className="text-sm text-gray-400 mb-2">{edu.institution}</div>
-                                  <div className="text-xs text-blue-400 mb-2">{edu.startDate} - {edu.endDate}</div>
-                                  <span className="text-xs text-gray-400">{edu.description}</span>
-                                </div>
-                                <div className="flex gap-2 ml-4">
-                                  <Button size="sm" variant="outline" onClick={() => handleEditEducation(edu)} className="border-blue-400/50 text-blue-400 hover:bg-blue-400/10"><Edit className="w-4 h-4" /></Button>
-                                  <Button size="sm" variant="outline" onClick={() => deleteEducationMutation.mutate(edu.id)} className="border-red-400/50 text-red-400 hover:bg-red-400/10"><Trash2 className="w-4 h-4" /></Button>
-                                </div>
+            {/* Education Management */}
+            <TabsContent value="education">
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-1">
+                  <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                    <CardHeader className="p-0 mb-6">
+                      <CardTitle className="text-2xl font-semibold text-blue-400">{editingEducation ? "Edit Education" : "Add Education"}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                      <Form {...educationForm}>
+                        <form onSubmit={educationForm.handleSubmit(onSubmitEducation)} className="space-y-4">
+                          <FormField control={educationForm.control} name="degree" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Degree</FormLabel>
+                              <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={educationForm.control} name="institution" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Institution</FormLabel>
+                              <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={educationForm.control} name="description" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Description</FormLabel>
+                              <FormControl><Textarea className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={educationForm.control} name="startDate" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Start Date</FormLabel>
+                              <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={educationForm.control} name="endDate" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">End Date</FormLabel>
+                              <FormControl><Input className="bg-slate-800 border-gray-600 text-white" {...field} /></FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <FormField control={educationForm.control} name="order" render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Order</FormLabel>
+                              <FormControl>
+                                <Input type="number" className="bg-slate-800 border-gray-600 text-white" {...field} onChange={e => field.onChange(Number(e.target.value))} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )} />
+                          <div className="flex gap-2">
+                            <Button type="submit" className="flex-1 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600">{editingEducation ? "Update" : "Create"}</Button>
+                            {editingEducation && <Button type="button" variant="outline" onClick={handleCancelEditEducation} className="border-white/20 text-white">Cancel</Button>}
+                          </div>
+                        </form>
+                      </Form>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="lg:col-span-2">
+                  <Card className="glass-effect rounded-2xl p-8 border-white/10">
+                    <CardHeader className="p-0 mb-6">
+                      <CardTitle className="text-2xl font-semibold text-green-400">Manage Education</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                      <div className="space-y-4">
+                        {education.map((edu) => (
+                          <div key={edu.id} className="glass-effect p-4 rounded-xl">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-white mb-2">{edu.degree}</h3>
+                                <div className="text-sm text-gray-400 mb-2">{edu.institution}</div>
+                                <div className="text-xs text-blue-400 mb-2">{edu.startDate} - {edu.endDate}</div>
+                                <span className="text-xs text-gray-400">{edu.description}</span>
+                              </div>
+                              <div className="flex gap-2 ml-4">
+                                <Button size="sm" variant="outline" onClick={() => handleEditEducation(edu)} className="border-blue-400/50 text-blue-400 hover:bg-blue-400/10"><Edit className="w-4 h-4" /></Button>
+                                <Button size="sm" variant="outline" onClick={() => deleteEducationMutation.mutate(edu.id)} className="border-red-400/50 text-red-400 hover:bg-red-400/10"><Trash2 className="w-4 h-4" /></Button>
                               </div>
                             </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </TabsContent>
+              </div>
+            </TabsContent>
 
               {/* Values Management */}
               <TabsContent value="values">
@@ -1686,10 +1686,10 @@ export default function Admin() {
                   </div>
                 </div>
               </TabsContent>
-            </Tabs>
-          </div>
-        </section>
-      </div>
+          </Tabs>
+        </div>
+      </section>
+    </div>
     </>
   );
 }

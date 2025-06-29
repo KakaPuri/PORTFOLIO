@@ -260,84 +260,84 @@ export async function seedDatabase() {
       
       // Create initial profile
       await storage.updateProfile({
-        name: "John Doe",
-        email: "john.doe@email.com",
-        phone: "+62 812-3456-7890",
-        location: "Jakarta, Indonesia",
+      name: "John Doe",
+      email: "john.doe@email.com",
+      phone: "+62 812-3456-7890",
+      location: "Jakarta, Indonesia",
         age: 22,
         position: "Full Stack Developer",
-        tagline: "Full Stack Developer & Tech Enthusiast",
-        bio: "Seorang Full Stack Developer dengan pengalaman 5+ tahun dalam mengembangkan aplikasi web dan mobile. Passionate dalam teknologi terbaru dan selalu siap untuk tantangan baru.",
-        imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+      tagline: "Full Stack Developer & Tech Enthusiast",
+      bio: "Seorang Full Stack Developer dengan pengalaman 5+ tahun dalam mengembangkan aplikasi web dan mobile. Passionate dalam teknologi terbaru dan selalu siap untuk tantangan baru.",
+      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
       });
 
       // Create initial skills
-      const skillsData = [
-        { name: "React.js", category: "Frontend", percentage: 90, icon: "fab fa-react", order: 1 },
-        { name: "Node.js", category: "Backend", percentage: 85, icon: "fab fa-node-js", order: 2 },
-        { name: "Python", category: "Backend", percentage: 80, icon: "fab fa-python", order: 3 },
-        { name: "MongoDB", category: "Database", percentage: 75, icon: "fas fa-database", order: 4 },
-        { name: "Docker", category: "DevOps", percentage: 70, icon: "fab fa-docker", order: 5 },
-        { name: "AWS", category: "Cloud", percentage: 75, icon: "fab fa-aws", order: 6 },
-      ];
+    const skillsData = [
+      { name: "React.js", category: "Frontend", percentage: 90, icon: "fab fa-react", order: 1 },
+      { name: "Node.js", category: "Backend", percentage: 85, icon: "fab fa-node-js", order: 2 },
+      { name: "Python", category: "Backend", percentage: 80, icon: "fab fa-python", order: 3 },
+      { name: "MongoDB", category: "Database", percentage: 75, icon: "fas fa-database", order: 4 },
+      { name: "Docker", category: "DevOps", percentage: 70, icon: "fab fa-docker", order: 5 },
+      { name: "AWS", category: "Cloud", percentage: 75, icon: "fab fa-aws", order: 6 },
+    ];
       for (const skill of skillsData) {
         await storage.createSkill(skill);
       }
 
       // Create initial experiences
-      const experiencesData = [
-        {
-          title: "Senior Full Stack Developer",
-          company: "Tech Company Inc.",
-          description: "Leading development of enterprise web applications using React, Node.js, and cloud technologies. Mentoring junior developers and architecting scalable solutions.",
-          startDate: "2021",
-          endDate: null,
-          current: true,
-          order: 1,
-        },
-        {
-          title: "Frontend Developer",
-          company: "Digital Agency",
-          description: "Developed responsive web applications and collaborated with design teams to create engaging user experiences using modern frontend technologies.",
-          startDate: "2019",
-          endDate: "2021",
-          current: false,
-          order: 2,
-        },
+    const experiencesData = [
+      {
+        title: "Senior Full Stack Developer",
+        company: "Tech Company Inc.",
+        description: "Leading development of enterprise web applications using React, Node.js, and cloud technologies. Mentoring junior developers and architecting scalable solutions.",
+        startDate: "2021",
+        endDate: null,
+        current: true,
+        order: 1,
+      },
+      {
+        title: "Frontend Developer",
+        company: "Digital Agency",
+        description: "Developed responsive web applications and collaborated with design teams to create engaging user experiences using modern frontend technologies.",
+        startDate: "2019",
+        endDate: "2021",
+        current: false,
+        order: 2,
+      },
       ];
       for (const exp of experiencesData) {
         await storage.createExperience(exp);
       }
 
       // Create initial education
-      const educationData = [
-        {
-          degree: "Bachelor of Computer Science",
-          institution: "University of Technology",
-          description: "Focused on software engineering and web development with honors degree. Active in programming competitions and tech communities.",
-          startDate: "2014",
-          endDate: "2018",
-          order: 1,
-        },
+    const educationData = [
+      {
+        degree: "Bachelor of Computer Science",
+        institution: "University of Technology",
+        description: "Focused on software engineering and web development with honors degree. Active in programming competitions and tech communities.",
+        startDate: "2014",
+        endDate: "2018",
+        order: 1,
+      },
       ];
       for (const edu of educationData) {
         await storage.createEducation(edu);
       }
 
       // Create initial activities
-      const activitiesData = [
-        {
-          title: "Hackathon Winner",
-          description: "First place in National Tech Hackathon 2022",
-          icon: "fas fa-trophy",
-          order: 1,
-        },
-        {
-          title: "Community Leader",
-          description: "Leading local developer community with 500+ members",
-          icon: "fas fa-users",
-          order: 2,
-        },
+    const activitiesData = [
+      {
+        title: "Hackathon Winner",
+        description: "First place in National Tech Hackathon 2022",
+        icon: "fas fa-trophy",
+        order: 1,
+      },
+      {
+        title: "Community Leader",
+        description: "Leading local developer community with 500+ members",
+        icon: "fas fa-users",
+        order: 2,
+      },
       ];
       for (const activity of activitiesData) {
         await storage.createActivity(activity);
@@ -355,37 +355,37 @@ export async function seedDatabase() {
           title: "Collaboration",
           description: "Building strong relationships and working effectively in teams",
           icon: "fas fa-handshake",
-          order: 2,
-        },
-        {
+        order: 2,
+      },
+      {
           title: "Quality",
           description: "Committed to delivering high-quality, maintainable code",
           icon: "fas fa-star",
-          order: 3,
-        },
-      ];
+        order: 3,
+      },
+    ];
       for (const value of valuesData) {
         await storage.createValue(value);
       }
 
       // Create initial articles
-      const articlesData = [
-        {
-          title: "Membangun Modern Web App dengan React",
-          content: "Tutorial lengkap menggunakan React Hooks dan modern best practices untuk development aplikasi web yang performant...",
-          excerpt: "Tutorial lengkap menggunakan React Hooks dan modern best practices untuk development aplikasi web yang performant.",
-          category: "React",
-          imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
-          published: true,
-        },
-        {
-          title: "Optimasi Performance Node.js Backend",
-          content: "Tips dan trik untuk meningkatkan performance aplikasi backend Node.js dengan caching dan database optimization...",
-          excerpt: "Tips dan trik untuk meningkatkan performance aplikasi backend Node.js dengan caching dan database optimization.",
-          category: "Node.js",
-          imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
-          published: true,
-        },
+    const articlesData = [
+      {
+        title: "Membangun Modern Web App dengan React",
+        content: "Tutorial lengkap menggunakan React Hooks dan modern best practices untuk development aplikasi web yang performant...",
+        excerpt: "Tutorial lengkap menggunakan React Hooks dan modern best practices untuk development aplikasi web yang performant.",
+        category: "React",
+        imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        published: true,
+      },
+      {
+        title: "Optimasi Performance Node.js Backend",
+        content: "Tips dan trik untuk meningkatkan performance aplikasi backend Node.js dengan caching dan database optimization...",
+        excerpt: "Tips dan trik untuk meningkatkan performance aplikasi backend Node.js dengan caching dan database optimization.",
+        category: "Node.js",
+        imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
+        published: true,
+      },
       ];
       for (const article of articlesData) {
         await storage.createArticle(article);

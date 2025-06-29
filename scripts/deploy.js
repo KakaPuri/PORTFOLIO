@@ -12,6 +12,7 @@ async function deploy() {
     // Check if DATABASE_URL is available
     if (!process.env.DATABASE_URL) {
       console.log('⚠️  DATABASE_URL not found, skipping database setup');
+      console.log('ℹ️  Database setup will be done after application starts');
       return;
     }
 
@@ -27,6 +28,7 @@ async function deploy() {
       console.log('✅ Database connection successful');
     } catch (error) {
       console.error('❌ Database connection failed:', error.message);
+      console.log('ℹ️  Database setup will be retried after application starts');
       return;
     }
 
@@ -74,7 +76,7 @@ async function deploy() {
     console.log('🎉 Deployment completed successfully!');
   } catch (error) {
     console.error('❌ Deployment failed:', error);
-    process.exit(1);
+    console.log('ℹ️  Application will start without database setup');
   }
 }
 
