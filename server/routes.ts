@@ -112,7 +112,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const profile = await storage.updateProfile(result.data);
       res.json(profile);
     } catch (error) {
-      res.status(500).json({ message: "Failed to update profile" });
+      console.error("Profile update error:", error, req.body);
+      res.status(500).json({ message: "Failed to update profile", error: error?.message });
     }
   });
 
@@ -150,7 +151,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const article = await storage.createArticle(result.data);
       res.status(201).json(article);
     } catch (error) {
-      res.status(500).json({ message: "Failed to create article" });
+      console.error("Article create error:", error, req.body);
+      res.status(500).json({ message: "Failed to create article", error: error?.message });
     }
   });
 
@@ -168,7 +170,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json(article);
     } catch (error) {
-      res.status(500).json({ message: "Failed to update article" });
+      console.error("Article update error:", error, req.body);
+      res.status(500).json({ message: "Failed to update article", error: error?.message });
     }
   });
 
@@ -181,7 +184,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ message: "Article deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Failed to delete article" });
+      console.error("Article delete error:", error, req.params);
+      res.status(500).json({ message: "Failed to delete article", error: error?.message });
     }
   });
 
@@ -206,7 +210,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const skill = await storage.createSkill(result.data);
       res.status(201).json(skill);
     } catch (error) {
-      res.status(500).json({ message: "Failed to create skill" });
+      console.error("Skill create error:", error, req.body);
+      res.status(500).json({ message: "Failed to create skill", error: error?.message });
     }
   });
 
@@ -224,7 +229,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json(skill);
     } catch (error) {
-      res.status(500).json({ message: "Failed to update skill" });
+      console.error("Skill update error:", error, req.body);
+      res.status(500).json({ message: "Failed to update skill", error: error?.message });
     }
   });
 
@@ -237,7 +243,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ message: "Skill deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Failed to delete skill" });
+      console.error("Skill delete error:", error, req.params);
+      res.status(500).json({ message: "Failed to delete skill", error: error?.message });
     }
   });
 
@@ -262,7 +269,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const experience = await storage.createExperience(result.data);
       res.status(201).json(experience);
     } catch (error) {
-      res.status(500).json({ message: "Failed to create experience" });
+      console.error("Experience create error:", error, req.body);
+      res.status(500).json({ message: "Failed to create experience", error: error?.message });
     }
   });
 
@@ -287,7 +295,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const education = await storage.createEducation(result.data);
       res.status(201).json(education);
     } catch (error) {
-      res.status(500).json({ message: "Failed to create education" });
+      console.error("Education create error:", error, req.body);
+      res.status(500).json({ message: "Failed to create education", error: error?.message });
     }
   });
 
@@ -305,7 +314,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json(education);
     } catch (error) {
-      res.status(500).json({ message: "Failed to update education" });
+      console.error("Education update error:", error, req.body);
+      res.status(500).json({ message: "Failed to update education", error: error?.message });
     }
   });
 
@@ -318,7 +328,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ message: "Education deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Failed to delete education" });
+      console.error("Education delete error:", error, req.params);
+      res.status(500).json({ message: "Failed to delete education", error: error?.message });
     }
   });
 
@@ -343,7 +354,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const activity = await storage.createActivity(result.data);
       res.status(201).json(activity);
     } catch (error) {
-      res.status(500).json({ message: "Failed to create activity" });
+      console.error("Activity create error:", error, req.body);
+      res.status(500).json({ message: "Failed to create activity", error: error?.message });
     }
   });
 
@@ -361,7 +373,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json(activity);
     } catch (error) {
-      res.status(500).json({ message: "Failed to update activity" });
+      console.error("Activity update error:", error, req.body);
+      res.status(500).json({ message: "Failed to update activity", error: error?.message });
     }
   });
 
@@ -374,7 +387,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ message: "Activity deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Failed to delete activity" });
+      console.error("Activity delete error:", error, req.params);
+      res.status(500).json({ message: "Failed to delete activity", error: error?.message });
     }
   });
 
@@ -399,7 +413,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const value = await storage.createValue(result.data);
       res.status(201).json(value);
     } catch (error) {
-      res.status(500).json({ message: "Failed to create value" });
+      console.error("Value create error:", error, req.body);
+      res.status(500).json({ message: "Failed to create value", error: error?.message });
     }
   });
 
@@ -417,7 +432,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json(value);
     } catch (error) {
-      res.status(500).json({ message: "Failed to update value" });
+      console.error("Value update error:", error, req.body);
+      res.status(500).json({ message: "Failed to update value", error: error?.message });
     }
   });
 
@@ -430,7 +446,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ message: "Value deleted successfully" });
     } catch (error) {
-      res.status(500).json({ message: "Failed to delete value" });
+      console.error("Value delete error:", error, req.params);
+      res.status(500).json({ message: "Failed to delete value", error: error?.message });
     }
   });
 
