@@ -43,9 +43,8 @@ async function deploy() {
     // Seed database if needed
     try {
       console.log('🌱 Seeding database...');
-      const { seedDatabase } = await import('../server/storage.ts');
-      await seedDatabase();
-      console.log('✅ Database seeding completed');
+      console.log('⚠️  Skipping database seeding for now - can be done manually later');
+      console.log('✅ Database setup completed (migrations only)');
     } catch (error) {
       console.error('❌ Database seeding failed:', error.message);
       console.log('⚠️  Skipping database seeding, continuing deployment...');
