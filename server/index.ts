@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from './storage';
+import { exec } from "child_process";
 
 const app = express();
 app.use(express.json({ limit: '20mb' }));
@@ -89,4 +90,15 @@ app.use((req, res, next) => {
   }, () => {
     log(`serving on port ${port}`);
   });
+
+  // Jalankan migrasi setiap server start (hanya di production)
+  if (process.env.NODE_ENV === "production") {
+    exec("npx drizzle-kit push", (err, stdout, stderr) => {
+      if (err) {
+        console.error("Migration error:", stderr);
+      } else {
+        console.log("Migration result:", stdout);
+      }
+    });
+  }
 })();

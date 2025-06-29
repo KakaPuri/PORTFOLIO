@@ -1,88 +1,88 @@
-import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { mysqlTable, text, int, boolean, timestamp, varchar } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const users = mysqlTable("users", {
+  id: int("id").primaryKey().autoincrement(),
+  username: varchar("username", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
 });
 
-export const articles = pgTable("articles", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
+export const articles = mysqlTable("articles", {
+  id: int("id").primaryKey().autoincrement(),
+  title: varchar("title", { length: 255 }).notNull(),
   content: text("content").notNull(),
   excerpt: text("excerpt").notNull(),
-  category: text("category").notNull(),
-  imageUrl: text("image_url"),
+  category: varchar("category", { length: 100 }).notNull(),
+  imageUrl: varchar("image_url", { length: 500 }),
   published: boolean("published").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const skills = pgTable("skills", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  category: text("category").notNull(),
-  percentage: integer("percentage").notNull(),
-  icon: text("icon"),
-  order: integer("order").default(0),
+export const skills = mysqlTable("skills", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  percentage: int("percentage").notNull(),
+  icon: varchar("icon", { length: 100 }),
+  order: int("order").default(0),
 });
 
-export const experiences = pgTable("experiences", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  company: text("company").notNull(),
+export const experiences = mysqlTable("experiences", {
+  id: int("id").primaryKey().autoincrement(),
+  title: varchar("title", { length: 255 }).notNull(),
+  company: varchar("company", { length: 255 }).notNull(),
   description: text("description").notNull(),
-  startDate: text("start_date").notNull(),
-  endDate: text("end_date"),
+  startDate: varchar("start_date", { length: 50 }).notNull(),
+  endDate: varchar("end_date", { length: 50 }),
   current: boolean("current").default(false),
-  order: integer("order").default(0),
+  order: int("order").default(0),
 });
 
-export const education = pgTable("education", {
-  id: serial("id").primaryKey(),
-  degree: text("degree").notNull(),
-  institution: text("institution").notNull(),
+export const education = mysqlTable("education", {
+  id: int("id").primaryKey().autoincrement(),
+  degree: varchar("degree", { length: 255 }).notNull(),
+  institution: varchar("institution", { length: 255 }).notNull(),
   description: text("description").notNull(),
-  startDate: text("start_date").notNull(),
-  endDate: text("end_date").notNull(),
-  order: integer("order").default(0),
+  startDate: varchar("start_date", { length: 50 }).notNull(),
+  endDate: varchar("end_date", { length: 50 }).notNull(),
+  order: int("order").default(0),
 });
 
-export const activities = pgTable("activities", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
+export const activities = mysqlTable("activities", {
+  id: int("id").primaryKey().autoincrement(),
+  title: varchar("title", { length: 255 }).notNull(),
   description: text("description").notNull(),
-  icon: text("icon").notNull(),
-  order: integer("order").default(0),
+  icon: varchar("icon", { length: 100 }).notNull(),
+  order: int("order").default(0),
 });
 
-export const values = pgTable("values", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
+export const values = mysqlTable("values", {
+  id: int("id").primaryKey().autoincrement(),
+  title: varchar("title", { length: 255 }).notNull(),
   description: text("description").notNull(),
-  icon: text("icon").notNull(),
-  order: integer("order").default(0),
+  icon: varchar("icon", { length: 100 }).notNull(),
+  order: int("order").default(0),
 });
 
-export const profile = pgTable("profile", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  phone: text("phone"),
-  location: text("location"),
-  age: integer("age"),
-  position: text("position"),
-  tagline: text("tagline"),
+export const profile = mysqlTable("profile", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  location: varchar("location", { length: 255 }),
+  age: int("age"),
+  position: varchar("position", { length: 255 }),
+  tagline: varchar("tagline", { length: 500 }),
   bio: text("bio").notNull(),
-  imageUrl: text("image_url"),
+  imageUrl: varchar("image_url", { length: 500 }),
 });
 
-export const messages = pgTable("messages", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  subject: text("subject").notNull(),
+export const messages = mysqlTable("messages", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  subject: varchar("subject", { length: 255 }).notNull(),
   message: text("message").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   read: boolean("read").default(false),
