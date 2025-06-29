@@ -584,6 +584,11 @@ export default function Admin() {
   };
 
   const onSubmitSkill = (data: any) => {
+    // Validasi field wajib
+    if (!data.name || !data.category || data.percentage === undefined || data.percentage === null) {
+      toast({ title: "Please fill all required fields", variant: "destructive" });
+      return;
+    }
     if (editingSkill) {
       updateSkillMutation.mutate({ id: editingSkill.id, data });
     } else {
