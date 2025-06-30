@@ -3,10 +3,18 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from './storage';
 import { exec } from "child_process";
+import cors from "cors";
+import path from "path";
 
 const app = express();
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: false, limit: '20mb' }));
+app.use(cors({
+  origin: true, // allow all origins or set to frontend URL for production
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // Tambahkan timeout lebih panjang untuk upload besar
 app.use((req, res, next) => {
