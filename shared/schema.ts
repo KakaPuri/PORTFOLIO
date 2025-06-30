@@ -88,6 +88,13 @@ export const messages = mysqlTable("messages", {
   read: boolean("read").default(false),
 });
 
+export const socialLinks = mysqlTable("social_links", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 100 }).notNull(),
+  icon: varchar("icon", { length: 100 }).notNull(),
+  url: varchar("url", { length: 255 }).notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -128,6 +135,10 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   read: true,
 });
 
+export const insertSocialLinkSchema = createInsertSchema(socialLinks).omit({
+  id: true,
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Article = typeof articles.$inferSelect;
@@ -146,3 +157,5 @@ export type Profile = typeof profile.$inferSelect;
 export type InsertProfile = z.infer<typeof insertProfileSchema>;
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
+export type SocialLink = typeof socialLinks.$inferSelect;
+export type InsertSocialLink = z.infer<typeof insertSocialLinkSchema>;

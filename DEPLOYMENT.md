@@ -140,4 +140,6 @@ If you encounter issues:
 1. Check Railway logs
 2. Verify environment variables
 3. Test locally with production build
-4. Check database connectivity 
+4. Check database connectivity
+
+// trigger redeploy 

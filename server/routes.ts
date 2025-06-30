@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { 
   insertArticleSchema, insertSkillSchema, insertExperienceSchema,
   insertEducationSchema, insertActivitySchema, insertValueSchema, insertProfileSchema,
-  insertMessageSchema 
+  insertMessageSchema, socialLinks, insertSocialLinkSchema 
 } from "@shared/schema";
 import multer from "multer";
 
@@ -555,6 +555,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Simpan path/URL ke database sesuai kebutuhan
     const imageUrl = `/uploads/${req.file.filename}`;
     res.json({ imageUrl });
+  });
+
+  // CRUD Social Links
+  app.get("/api/social-links", async (req, res) => {
+    try {
+      const links = await storage.getSocialLinks();
+      res.json(links || []);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch social links" });
+    }
+  });
+
+  app.post("/api/social-links", requireAuth, async (req, res) => {
+    try {
+      const result = insertSocialLinkSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ message: "Invalid data", errors: result.error.errors });
+      }
+      const link = await storage.createSocialLink(result.data);
+      res.status(201).json(link);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to create social link" });
+    }
+  });
+
+  app.put("/api/social-links/:id", requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const result = insertSocialLinkSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ message: "Invalid data", errors: result.error.errors });
+      }
+      const link = await storage.updateSocialLink(id, result.data);
+      res.json(link);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update social link" });
+    }
+  });
+
+  app.delete("/api/social-links/:id", requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteSocialLink(id);
+      if (!deleted) {
+        return res.status(404).json({ message: "Social link not found" });
+      }
+      res.json({ message: "Social link deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete social link" });
+    }
   });
 
   const httpServer = createServer(app);

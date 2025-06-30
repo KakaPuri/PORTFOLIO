@@ -3,7 +3,8 @@ import {
   type User, type InsertUser, type Article, type InsertArticle,
   type Skill, type InsertSkill, type Experience, type InsertExperience,
   type Education, type InsertEducation, type Activity, type InsertActivity,
-  type Value, type InsertValue, type Profile, type InsertProfile, type Message, type InsertMessage
+  type Value, type InsertValue, type Profile, type InsertProfile, type Message, type InsertMessage,
+  socialLinks, InsertSocialLink
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -60,6 +61,12 @@ export interface IStorage {
   createMessage(message: InsertMessage): Promise<Message>;
   markMessageAsRead(id: number): Promise<boolean>;
   deleteMessage(id: number): Promise<boolean>;
+
+  // Social Link methods
+  getSocialLinks(): Promise<InsertSocialLink[]>;
+  createSocialLink(data: InsertSocialLink): Promise<InsertSocialLink>;
+  updateSocialLink(id: number, data: InsertSocialLink): Promise<InsertSocialLink>;
+  deleteSocialLink(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -245,6 +252,26 @@ export class DatabaseStorage implements IStorage {
   async deleteMessage(id: number): Promise<boolean> {
     const result = await db.delete(messages).where(eq(messages.id, id));
     return result.affectedRows > 0;
+  }
+
+  // Social Link methods
+  async getSocialLinks(): Promise<InsertSocialLink[]> {
+    return await db.select().from(socialLinks);
+  }
+
+  async createSocialLink(data: InsertSocialLink): Promise<InsertSocialLink> {
+    const [link] = await db.insert(socialLinks).values(data).returning();
+    return link;
+  }
+
+  async updateSocialLink(id: number, data: InsertSocialLink): Promise<InsertSocialLink> {
+    const [link] = await db.update(socialLinks).set(data).where(socialLinks.id.eq(id)).returning();
+    return link;
+  }
+
+  async deleteSocialLink(id: number): Promise<boolean> {
+    const result = await db.delete(socialLinks).where(socialLinks.id.eq(id));
+    return result.rowCount > 0;
   }
 }
 

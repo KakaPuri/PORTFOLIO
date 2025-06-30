@@ -7,7 +7,7 @@ import type {
 
 export const api = {
   // Profile
-  getProfile: () => fetch("/api/profile").then(res => res.json()) as Promise<Profile>,
+  getProfile: () => apiRequest("GET", "/api/profile" ).then(res => res.json()) as Promise<Profile>,
   updateProfile: (data: InsertProfile) => apiRequest("PUT", "/api/profile", data),
 
   // Articles
@@ -49,7 +49,7 @@ export const api = {
 
   // Messages
   getMessages: () => apiRequest("GET", "/api/messages").then(res => res.json()) as Promise<Message[]>,
-  getMessagesByEmail: (email: string) => fetch(`/api/messages/sender/${encodeURIComponent(email)}`).then(res => res.json()) as Promise<Message[]>,
+  getMessagesByEmail: (email: string) => apiRequest("GET", `/api/messages/sender/${encodeURIComponent(email)}`).then(res => res.json()) as Promise<Message[]>,
   createMessage: (data: InsertMessage) => apiRequest("POST", "/api/messages", data),
   markMessageAsRead: (id: number) => apiRequest("PUT", `/api/messages/${id}/read`),
   deleteMessage: (id: number) => apiRequest("DELETE", `/api/messages/${id}`).then(res => {
@@ -61,4 +61,8 @@ export const api = {
     return res.json();
   }),
   deleteMessageBySender: (id: number, email: string) => apiRequest("DELETE", `/api/messages/${id}/sender`, { email }),
+
+  // Social Links
+  getSocialLinks: () => apiRequest("GET", "/api/social-links"),
+  updateSocialLink: (id: number, data: any) => apiRequest("PUT", `/api/social-links/${id}`, data),
 };

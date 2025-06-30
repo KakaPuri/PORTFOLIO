@@ -78,6 +78,11 @@ export default function Admin() {
     queryFn: api.getValues,
   });
 
+  const { data: socialLinks = [] } = useQuery({
+    queryKey: ["/api/social-links"],
+    queryFn: () => api.getSocialLinks().then(res => res.json()),
+  });
+
   const articleForm = useForm({
     resolver: zodResolver(insertArticleSchema),
     defaultValues: {
@@ -342,6 +347,11 @@ export default function Admin() {
     onError: () => {
       toast({ title: "Failed to delete value", variant: "destructive" });
     },
+  });
+
+  const updateSocialLinkMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number, data: any }) => api.updateSocialLink(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["/api/social-links"] }),
   });
 
   useEffect(() => {
@@ -747,14 +757,15 @@ export default function Admin() {
           </div>
           
           <Tabs defaultValue="articles" className="w-full">
-            <TabsList className="grid w-full grid-cols-6 glass-effect border-white/10">
+            <TabsList className="grid w-full grid-cols-7 glass-effect border-white/10">
               <TabsTrigger value="articles">Articles</TabsTrigger>
               <TabsTrigger value="skills">Skills</TabsTrigger>
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="messages">Messages</TabsTrigger>
               <TabsTrigger value="activities">Activities</TabsTrigger>
               <TabsTrigger value="education">Education</TabsTrigger>
-                <TabsTrigger value="values">Values</TabsTrigger>
+              <TabsTrigger value="values">Values</TabsTrigger>
+              <TabsTrigger value="social-links">Social Links</TabsTrigger>
             </TabsList>
 
             {/* Articles Management */}
@@ -844,9 +855,11 @@ export default function Admin() {
                                         if (file) {
                                           const formData = new FormData();
                                           formData.append('image', file);
+                                          const sessionId = localStorage.getItem('adminSessionId');
                                           const res = await fetch('/api/upload', {
                                             method: 'POST',
                                             body: formData,
+                                            headers: sessionId ? { Authorization: `Bearer ${sessionId}` } : {},
                                           });
                                           const data = await res.json();
                                           if (data.imageUrl) {
@@ -1209,9 +1222,11 @@ export default function Admin() {
                                       if (file) {
                                         const formData = new FormData();
                                         formData.append('image', file);
+                                        const sessionId = localStorage.getItem('adminSessionId');
                                         const res = await fetch('/api/upload', {
                                           method: 'POST',
                                           body: formData,
+                                          headers: sessionId ? { Authorization: `Bearer ${sessionId}` } : {},
                                         });
                                         const data = await res.json();
                                         if (data.imageUrl) {
@@ -1700,6 +1715,35 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
+              </TabsContent>
+
+              {/* Section: Edit Social Media Links */}
+              <TabsContent value="social-links">
+                <Card className="glass-effect rounded-2xl p-8 border-white/10 mb-8">
+                  <CardHeader className="p-0 mb-6">
+                    <CardTitle className="text-2xl font-semibold text-blue-400">Edit Social Media Links</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <form className="space-y-4">
+                      {socialLinks.map((link: any) => (
+                        <div key={link.id} className="flex items-center gap-4">
+                          <span className="w-24 font-medium">{link.name}</span>
+                          <input
+                            type="text"
+                            defaultValue={link.url}
+                            className="flex-1 bg-slate-800 border-gray-600 text-white px-2 py-1 rounded"
+                            onBlur={e => {
+                              if (e.target.value !== link.url) {
+                                updateSocialLinkMutation.mutate({ id: link.id, data: { ...link, url: e.target.value } });
+                              }
+                            }}
+                          />
+                          <span className="text-gray-400 text-xs">Icon: {link.icon}</span>
+                        </div>
+                      ))}
+                    </form>
+                  </CardContent>
+                </Card>
               </TabsContent>
           </Tabs>
         </div>
