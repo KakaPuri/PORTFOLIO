@@ -6,6 +6,7 @@ import {
   insertEducationSchema, insertActivitySchema, insertValueSchema, insertProfileSchema,
   insertMessageSchema 
 } from "@shared/schema";
+import multer from "multer";
 
 // Simple admin credentials (in production, use environment variables)
 const ADMIN_USERNAME = "admin";
@@ -29,6 +30,8 @@ function requireAuth(req: any, res: any, next: any) {
   
   next();
 }
+
+const upload = multer({ dest: "uploads/" });
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Health check endpoint (simple, no database dependency)
@@ -542,6 +545,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       res.status(500).json({ message: "Failed to delete message" });
     }
+  });
+
+  // Tambahkan endpoint upload gambar
+  app.post("/api/upload", requireAuth, upload.single("image"), (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    // Simpan path/URL ke database sesuai kebutuhan
+    const imageUrl = `/uploads/${req.file.filename}`;
+    res.json({ imageUrl });
   });
 
   const httpServer = createServer(app);

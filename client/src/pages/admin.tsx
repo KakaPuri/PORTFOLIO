@@ -842,11 +842,16 @@ export default function Admin() {
                                       onChange={async (e) => {
                                         const file = e.target.files?.[0];
                                         if (file) {
-                                          const reader = new FileReader();
-                                          reader.onloadend = () => {
-                                            field.onChange(reader.result as string);
-                                          };
-                                          reader.readAsDataURL(file);
+                                          const formData = new FormData();
+                                          formData.append('image', file);
+                                          const res = await fetch('/api/upload', {
+                                            method: 'POST',
+                                            body: formData,
+                                          });
+                                          const data = await res.json();
+                                          if (data.imageUrl) {
+                                            field.onChange(data.imageUrl);
+                                          }
                                         }
                                       }}
                                     />
@@ -1202,12 +1207,17 @@ export default function Admin() {
                                     onChange={async (e) => {
                                       const file = e.target.files?.[0];
                                       if (file) {
-                                        const reader = new FileReader();
-                                        reader.onloadend = () => {
-                                          setProfileImagePreview(reader.result as string);
-                                          field.onChange(reader.result as string);
-                                        };
-                                        reader.readAsDataURL(file);
+                                        const formData = new FormData();
+                                        formData.append('image', file);
+                                        const res = await fetch('/api/upload', {
+                                          method: 'POST',
+                                          body: formData,
+                                        });
+                                        const data = await res.json();
+                                        if (data.imageUrl) {
+                                          setProfileImagePreview(data.imageUrl);
+                                          field.onChange(data.imageUrl);
+                                        }
                                       }
                                     }}
                                   />
